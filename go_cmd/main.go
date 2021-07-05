@@ -1,8 +1,5 @@
 package main
 
-//docker       run image <cmd> <params>
-//go run main,go run 		<cmd> <params>
-
 import (
 	"fmt"
 	"log"
