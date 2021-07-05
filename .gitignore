@@ -1,7 +1,8 @@
-# ignores all files, except the ones with an extension.
+# ignores all files, except the ones with an extension or Dockerfile
 *
 !/**/
 !*.*
+!Dockerfile*
 
 # Binaries for programs and plugins
 *.exe
