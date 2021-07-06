@@ -1,31 +1,11 @@
-##
 ## Build
-##
+FROM golang:1.14-alpine AS build
 
-FROM golang:1.16-buster AS build
+WORKDIR /src/
+COPY main.go go.* /src/
+RUN CGO_ENABLED=0 go build -o /go_echo_server
 
-WORKDIR /app
-
-COPY go.mod .
-COPY go.sum .
-RUN go mod download
-
-COPY *.go .
-
-RUN go build -o /go_echo_server
-
-##
 ## Deploy
-##
-
-FROM gcr.io/distroless/base-debian10
-
-WORKDIR /
-
+FROM scratch
 COPY --from=build /go_echo_server /go_echo_server
-
-EXPOSE 8080
-
-USER nonroot:nonroot
-
 ENTRYPOINT ["/go_echo_server"]
