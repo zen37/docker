@@ -1,0 +1,31 @@
+## Build
+FROM golang:1.17-alpine3.15 AS build
+
+# Set current working directory
+WORKDIR /app
+
+# To avoid downloading dependencies every time we build image,
+# we are caching all the dependencies by first copying go.mod and go.sum files
+# and downloading them, to be used every time we build the image if the dependencies are not changed.
+
+# Copy go mod and sum files
+COPY go.mod ./
+COPY go.sum ./
+
+# Download all dependencies.
+RUN go mod download
+
+# Now, copy the source code
+COPY . .
+
+# CGO_ENABLED is disabled for cross system compilation; it is also a common best practise.
+# Build the application.
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o server
+#RUN CGO_ENABLED=0 go build -o /server
+
+## Deploy
+FROM scratch
+# Copy the pre-built binary file
+COPY --from=build /app/server .
+#ENTRYPOINT ["/server"]
+CMD ["./server"]
