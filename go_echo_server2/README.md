@@ -7,13 +7,10 @@ https://medium.com/codeshake/my-baby-steps-with-go-creating-and-dockerizing-a-re
 https://www.youtube.com/watch?v=WPpw61vScIs
 
 
+## Build
+docker build -t mcf:latest -f dockerfile .
 
-
-
-Dockerfile      echo_server		scratch		    12.21 MB
-
-Dockerfile_V1   echo_server		distroless  	27.14 MB
-
+## Run
 > docker run -p 80:8080 1695f4fbda5a
 ...
 ⇨ http server started on [::]:8080
@@ -46,15 +43,43 @@ localhost:100/ping
 localhost:100/ping
 Error, cannot open the page
 
-* docker build -t echo:v4 -f dockerfile3 .
 
-## Build
-# FROM golang:1.14-alpine AS build
-FROM golang:1.17-alpine3.15 AS build
+CURL
 
-REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
-echo         v4        908e9b3c3a73   13 hours ago   7.23MB
-echo         v2        d78b3a6a1571   14 hours ago   12.2MB
-echo         v3        e053efc4de9f   14 hours ago   12.2MB
-echo         v1        1695f4fbda5a   4 days ago     12.2MB
+GET
+curl http://localhost:8080/payments
 
+curl http://localhost:8080/payments \
+    --header "Content-Type: application/json" \
+    --request "GET"
+
+curl http://localhost:8080/payments/2
+
+
+POST
+
+curl http://localhost:8080/payments \
+    --include \
+    --header "Content-Type: application/json" \
+    --request "POST" \
+    --data '{"id": "4","invoice": "x467","currency": "EUR","amount": 49.99}'
+
+
+Generate UUID
+ go/src %  > for i in {1..3}; do UUID=`uuidgen`; echo $UUID; sleep 5;  done
+
+
+
+while sleep 0.01; do curl http://localhost:8080/intros \
+--include \
+--header "Content-Type: application/json" \
+--request "POST" \
+--data '{"prefix": "Hello World", "timestamp": "Jan 02, 2022 07:24:00 AM"}'; done
+
+while sleep 0.1;
+    do curl http://localhost:8080/payments \
+    --include \
+    --header "Content-Type: application/json" \
+    --request "POST" \
+    --data '{"id": "4","invoice": "x467","currency": "EUR","amount": 49.99}';
+done

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcf-deployment
+  labels:
+    app: mcf-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mcf
+  template:
+    metadata:
+      labels:
+        app: mcf
+    spec:
+      containers:
+        - name: mcf
+          image: acrapi.azurecr.io/mcf:v2
+          ports:
+            - containerPort: 8080

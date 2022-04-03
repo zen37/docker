@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -33,8 +34,11 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/health", healthCheck)
+
 	e.GET("/payments", getPayments)
 	e.GET("/payments/:id", getPaymentByID)
+	e.GET("/c", countPayments)
+
 	e.POST("/payments", postPayment)
 
 	e.Logger.Fatal(e.Start(":8080"))
@@ -46,6 +50,12 @@ func healthCheck(c echo.Context) error {
 
 func getPayments(c echo.Context) error {
 	return c.JSON(http.StatusOK, payments)
+}
+
+func countPayments(c echo.Context) error {
+
+	count := fmt.Sprintf("count: %d", len(payments))
+	return c.JSON(http.StatusOK, count)
 }
 
 func getPaymentByID(c echo.Context) error {
