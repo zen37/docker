@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mcf-deployment
+  namespace: mcf
   labels:
     app: mcf-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: mcf
@@ -16,13 +17,13 @@ spec:
     spec:
       containers:
         - name: mcf
-          image: acrapi.azurecr.io/mcf
+          image: acr9oct.azurecr.io/mcf:v1
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
             limits:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 150m
+              memory: 150Mi
           ports:
             - containerPort: 8080
