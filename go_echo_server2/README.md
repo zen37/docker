@@ -7,10 +7,10 @@ https://medium.com/codeshake/my-baby-steps-with-go-creating-and-dockerizing-a-re
 https://www.youtube.com/watch?v=WPpw61vScIs
 
 
-## Build
+## build
 docker build -t mcf:latest -f dockerfile .
 
-## Run
+## run
 > docker run -p 80:8080 1695f4fbda5a
 ...
 ⇨ http server started on [::]:8080
@@ -44,7 +44,7 @@ localhost:100/ping
 Error, cannot open the page
 
 
-CURL
+## curl
 
 GET
 curl http://localhost:8080/payments
@@ -83,3 +83,8 @@ while sleep 0.1;
     --request "POST" \
     --data '{"id": "4","invoice": "x467","currency": "EUR","amount": 49.99}';
 done
+
+
+## hey
+
+hey -n 8 -c 1  -m POST -D payment.json http://localhost:8080/payments
